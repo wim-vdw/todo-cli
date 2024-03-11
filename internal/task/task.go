@@ -3,10 +3,32 @@ package task
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 )
 
 type Task struct {
 	Description string `json:"description"`
+	Priority    int    `json:"priority"`
+	position    int
+}
+
+func (t *Task) SetPriority(priority int) {
+	t.Priority = priority
+}
+
+func (t *Task) PrettyPriority() string {
+	switch t.Priority {
+	case 1:
+		return "[HIGH]"
+	case 3:
+		return "[LOW]"
+	default:
+		return "[MEDIUM]"
+	}
+}
+
+func (t *Task) PrettyPosition() string {
+	return "(" + strconv.Itoa(t.position) + ")"
 }
 
 func ReadTasks(filename string) ([]Task, error) {
@@ -18,6 +40,9 @@ func ReadTasks(filename string) ([]Task, error) {
 	err = json.Unmarshal(data, &tasks)
 	if err != nil {
 		return []Task{}, err
+	}
+	for i, _ := range tasks {
+		tasks[i].position = i + 1
 	}
 	return tasks, nil
 }

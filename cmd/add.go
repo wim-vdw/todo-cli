@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+var priority int
+
 var addCmd = &cobra.Command{
 	Use:     "add tasks...",
 	Short:   "Add tasks to the To-Do list",
@@ -17,12 +19,12 @@ var addCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority")
 }
 
 func addTask(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		fmt.Println("Error: specify at least 1 task to add.")
-		cmd.Help()
 		os.Exit(1)
 	}
 	filename := viper.GetString("datafile")
@@ -34,6 +36,7 @@ func addTask(cmd *cobra.Command, args []string) {
 	}
 	for _, x := range args {
 		item := task.Task{Description: x}
+		item.SetPriority(priority)
 		tasks = append(tasks, item)
 	}
 	err = task.SaveTasks(filename, tasks)

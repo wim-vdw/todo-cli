@@ -2,12 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/wim-vdw/todo-cli/internal/task"
-	"os"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/wim-vdw/todo-cli/internal/task"
+	"os"
 )
+
+var displayPriority bool
 
 var showCmd = &cobra.Command{
 	Use:     "show",
@@ -18,6 +19,7 @@ var showCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(showCmd)
+	showCmd.Flags().BoolVarP(&displayPriority, "priority", "p", false, "display priority")
 }
 
 func showTasks(cmd *cobra.Command, args []string) {
@@ -32,6 +34,10 @@ func showTasks(cmd *cobra.Command, args []string) {
 		fmt.Println("Nothing on your To-Do list for the moment.")
 	}
 	for _, t := range tasks {
-		fmt.Println(t.Description)
+		if displayPriority {
+			fmt.Println(t.PrettyPosition(), t.Description, t.PrettyPriority())
+		} else {
+			fmt.Println(t.PrettyPosition(), t.Description)
+		}
 	}
 }
