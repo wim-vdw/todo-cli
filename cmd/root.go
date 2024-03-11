@@ -8,7 +8,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "todo-cli",
-	Short: "A To-Do application written in Go.",
+	Short: "A To-Do list application written in Go.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
 	},
