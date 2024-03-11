@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var rootCmd = &cobra.Command{
@@ -19,4 +20,9 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func init() {
+	rootCmd.PersistentFlags().String("datafile", "./tasks.json", "datafile containing tasks")
+	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
 }

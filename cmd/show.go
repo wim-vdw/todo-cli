@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var showCmd = &cobra.Command{
@@ -20,11 +21,15 @@ func init() {
 }
 
 func showTasks(cmd *cobra.Command, args []string) {
-	tasks, err := task.ReadTasks("./tasks.json")
+	filename := viper.GetString("datafile")
+	tasks, err := task.ReadTasks(filename)
 	if err != nil {
 		fmt.Println("Error reading datafile containing tasks.")
 		fmt.Println("Error message ->", err)
 		os.Exit(1)
+	}
+	if len(tasks) == 0 {
+		fmt.Println("Nothing on your To-Do list for the moment.")
 	}
 	for _, t := range tasks {
 		fmt.Println(t.Description)

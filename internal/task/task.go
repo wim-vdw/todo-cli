@@ -21,3 +21,15 @@ func ReadTasks(filename string) ([]Task, error) {
 	}
 	return tasks, nil
 }
+
+func SaveTasks(filename string, tasks []Task) error {
+	data, err := json.Marshal(tasks)
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(filename, data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}

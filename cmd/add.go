@@ -2,19 +2,38 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/wim-vdw/todo-cli/internal/task"
 )
 
 var addCmd = &cobra.Command{
-	Use:     "add",
+	Use:     "add tasks",
 	Short:   "Add tasks to the To-Do list",
 	Aliases: []string{"create", "new"},
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called", args)
-	},
+	Run:     addTask,
 }
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+}
+
+func addTask(cmd *cobra.Command, args []string) {
+	filename := viper.GetString("datafile")
+	tasks, err := task.ReadTasks(filename)
+	if err != nil {
+		fmt.Println("Error reading datafile containing tasks.")
+		fmt.Println("Error message ->", err)
+		fmt.Println("Tasks will be written to a new file.")
+	}
+	for _, x := range args {
+		item := task.Task{Description: x}
+		tasks = append(tasks, item)
+	}
+	err = task.SaveTasks(filename, tasks)
+	if err != nil {
+		fmt.Println("Error writing datafile containing tasks.")
+		fmt.Println("Error message ->", err)
+	}
+	fmt.Println("Task(s) written to datafile.")
 }
