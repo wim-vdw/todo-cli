@@ -10,10 +10,17 @@ import (
 
 var displayPriority bool
 
+const showExamples = `  # Show tasks
+  todo-cli show
+
+  # Show tasks including priority
+  todo-cli show --priority`
+
 var showCmd = &cobra.Command{
 	Use:     "show",
 	Short:   "Display tasks from the To-Do list",
 	Aliases: []string{"display", "list"},
+	Example: showExamples,
 	Run:     showTasks,
 }
 

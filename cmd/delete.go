@@ -10,10 +10,14 @@ import (
 	"strconv"
 )
 
+const deleteExamples = `  # Delete task with ID 1
+  todo-cli delete 1`
+
 var deleteCmd = &cobra.Command{
 	Use:     "delete task-id",
 	Short:   "Delete task from the To-Do list",
 	Aliases: []string{"del", "rm", "remove"},
+	Example: deleteExamples,
 	Args:    checkArgs,
 	Run:     deleteTask,
 }

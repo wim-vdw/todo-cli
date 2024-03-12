@@ -10,10 +10,20 @@ import (
 
 var priority int
 
+const addExamples = `  # Add one task
+  todo-cli add "Go to store"
+
+  # Add multiple tasks
+  todo-cli add "Go to store" "Visit family"
+
+  # Add multiple tasks all with the same priority
+  todo-cli add "Go to store" "Visit family" --priority 1`
+
 var addCmd = &cobra.Command{
 	Use:     "add tasks...",
 	Short:   "Add tasks to the To-Do list",
 	Aliases: []string{"create", "new"},
+	Example: addExamples,
 	Run:     addTask,
 }
 
