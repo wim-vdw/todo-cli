@@ -39,10 +39,12 @@ func addTask(cmd *cobra.Command, args []string) {
 		item.SetPriority(priority)
 		tasks = append(tasks, item)
 	}
+	fmt.Println("Task(s) added with success.")
 	err = task.SaveTasks(filename, tasks)
 	if err != nil {
 		fmt.Println("Error writing datafile containing tasks.")
 		fmt.Println("Error message ->", err)
+		os.Exit(1)
 	}
 	fmt.Println("Task(s) written to datafile.")
 }

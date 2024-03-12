@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"strconv"
 )
@@ -11,6 +12,8 @@ type Task struct {
 	Priority    int    `json:"priority"`
 	position    int
 }
+
+type Tasks []Task
 
 func (t *Task) SetPriority(priority int) {
 	t.Priority = priority
@@ -31,7 +34,7 @@ func (t *Task) PrettyPosition() string {
 	return "(" + strconv.Itoa(t.position) + ")"
 }
 
-func ReadTasks(filename string) ([]Task, error) {
+func ReadTasks(filename string) (Tasks, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return []Task{}, err
@@ -47,7 +50,7 @@ func ReadTasks(filename string) ([]Task, error) {
 	return tasks, nil
 }
 
-func SaveTasks(filename string, tasks []Task) error {
+func SaveTasks(filename string, tasks Tasks) error {
 	data, err := json.Marshal(tasks)
 	if err != nil {
 		return err
@@ -57,4 +60,13 @@ func SaveTasks(filename string, tasks []Task) error {
 		return err
 	}
 	return nil
+}
+
+func (t Tasks) DeleteTask(taskID int) (Tasks, error) {
+	if taskID > len(t) {
+		return []Task{}, errors.New("task-id does not exist")
+	}
+	taskID -= 1
+	t = append(t[:taskID], t[taskID+1:]...)
+	return t, nil
 }
