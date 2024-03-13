@@ -1,9 +1,12 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
+	"os/user"
+	"path/filepath"
 )
 
 var rootCmd = &cobra.Command{
@@ -22,7 +25,12 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().String("datafile", "./tasks.json", "Datafile containing tasks.")
+	u, err := user.Current()
+	if err != nil {
+		fmt.Println("Unable to detect home directory. Please set data file using --datafile.")
+	}
+	datafile := filepath.Join(u.HomeDir, ".tasks.json")
+	rootCmd.PersistentFlags().String("datafile", datafile, "Datafile containing tasks.")
 	rootCmd.PersistentFlags().BoolP("help", "h", false, "Display this help message.")
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
