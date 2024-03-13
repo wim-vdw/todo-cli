@@ -46,9 +46,9 @@ func showTasks(cmd *cobra.Command, args []string) {
 	printTitles(w, displayPriority)
 	for _, t := range tasks {
 		if displayPriority {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyDone()+"\t"+t.PrettyPriority())
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus()+"\t"+t.PrettyPriority())
 		} else {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyDone())
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus())
 		}
 	}
 	w.Flush()

@@ -34,7 +34,7 @@ func (t *Task) PrettyPosition() string {
 	return strconv.Itoa(t.position) + "."
 }
 
-func (t *Task) PrettyDone() string {
+func (t *Task) PrettyStatus() string {
 	if t.Done {
 		return "(DONE)"
 	} else {
