@@ -27,7 +27,7 @@ func Execute() {
 func init() {
 	u, err := user.Current()
 	if err != nil {
-		fmt.Println("Unable to detect home directory. Please set data file using --datafile.")
+		fmt.Println("Unable to detect home directory. Please set datafile using --datafile.")
 	}
 	datafile := filepath.Join(u.HomeDir, ".tasks.json")
 	rootCmd.PersistentFlags().String("datafile", datafile, "Datafile containing tasks.")
