@@ -24,24 +24,24 @@ var cleanCmd = &cobra.Command{
 	Run:     cleanTasks,
 }
 
-var force bool
+var forceClean bool
 
 func init() {
 	rootCmd.AddCommand(cleanCmd)
-	cleanCmd.Flags().BoolVar(&force, "force", false, "Immediately clean To-Do list and bypass graceful cleanup.")
+	cleanCmd.Flags().BoolVar(&forceClean, "force", false, "Immediately clean To-Do list and bypass graceful cleanup.")
 }
 
 func cleanTasks(cmd *cobra.Command, args []string) {
-	if !force {
+	if !forceClean {
 		fmt.Print("Are you sure? (Y)es/(N)o): ")
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(strings.ToUpper(input))
 		if input == "Y" || input == "YES" {
-			force = true
+			forceClean = true
 		}
 	}
-	if force {
+	if forceClean {
 		filename := viper.GetString("datafile")
 		tasks := task.Tasks{}
 		err := task.SaveTasks(filename, tasks)
