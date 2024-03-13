@@ -20,6 +20,18 @@ func (t Tasks) DeleteTask(taskID int) (Tasks, error) {
 	return t, nil
 }
 
+func (t Tasks) FinishTask(taskID int) (Tasks, error) {
+	if taskID <= 0 {
+		return []Task{}, errors.New("task-id can not be negative")
+	}
+	if taskID > len(t) {
+		return []Task{}, errors.New("task-id does not exist")
+	}
+	taskID -= 1
+	t[taskID].SetDone()
+	return t, nil
+}
+
 func ReadTasks(filename string) (Tasks, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {

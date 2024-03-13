@@ -41,12 +41,12 @@ func showTasks(cmd *cobra.Command, args []string) {
 	if len(tasks) == 0 {
 		fmt.Println("Nothing on your To-Do list for the moment.")
 	}
-	w := tabwriter.NewWriter(os.Stdout, 5, 0, 1, ' ', 0)
+	w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
 	for _, t := range tasks {
 		if displayPriority {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyPriority())
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyDone()+"\t"+t.PrettyPriority())
 		} else {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description)
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyDone())
 		}
 	}
 	w.Flush()

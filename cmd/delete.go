@@ -23,7 +23,7 @@ var deleteCmd = &cobra.Command{
 	Short:   "Delete task from the To-Do list",
 	Aliases: []string{"del", "rm", "remove"},
 	Example: deleteExamples,
-	Args:    checkArgs,
+	Args:    checkArgsDelete,
 	Run:     deleteTask,
 }
 
@@ -34,7 +34,7 @@ func init() {
 	rootCmd.AddCommand(deleteCmd)
 }
 
-func checkArgs(cmd *cobra.Command, args []string) error {
+func checkArgsDelete(cmd *cobra.Command, args []string) error {
 	if len(args) != 1 {
 		return errors.New("specify exactly 1 argument containing task-id")
 	}

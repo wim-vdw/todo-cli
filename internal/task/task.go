@@ -7,11 +7,16 @@ import (
 type Task struct {
 	Description string `json:"description"`
 	Priority    int    `json:"priority"`
+	Done        bool   `json:"done"`
 	position    int
 }
 
 func (t *Task) SetPriority(priority int) {
 	t.Priority = priority
+}
+
+func (t *Task) SetDone() {
+	t.Done = true
 }
 
 func (t *Task) PrettyPriority() string {
@@ -26,5 +31,13 @@ func (t *Task) PrettyPriority() string {
 }
 
 func (t *Task) PrettyPosition() string {
-	return "(" + strconv.Itoa(t.position) + ")"
+	return strconv.Itoa(t.position) + "."
+}
+
+func (t *Task) PrettyDone() string {
+	if t.Done {
+		return "(DONE)"
+	} else {
+		return "(TODO)"
+	}
 }
