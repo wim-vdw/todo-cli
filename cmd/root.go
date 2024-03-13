@@ -12,7 +12,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "todo-cli",
 	Short:   "A To-Do list application written in Go.",
-	Version: "v1.0.2",
+	Version: "v1.0.3",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
 	},
@@ -33,7 +33,7 @@ func init() {
 	datafile := filepath.Join(u.HomeDir, ".tasks.json")
 	rootCmd.PersistentFlags().String("datafile", datafile, "Datafile containing tasks.")
 	rootCmd.PersistentFlags().BoolP("help", "h", false, "Display this help message.")
-	rootCmd.PersistentFlags().BoolP("version", "v", false, "Display version info.")
+	rootCmd.Flags().BoolP("version", "v", false, "Display version info.")
 	rootCmd.SetVersionTemplate("{{ .Version }}\n")
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
