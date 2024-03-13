@@ -12,3 +12,9 @@ I used this small project for learning some Go language specifics.
 - **Go Tabwriter**: Formatting text output in aligned columns for better readability.
 - **Project Folder Best Practices**: Organizing project files and directories for maintainability and readability.
 - **Command-line interface (CLI) design**: Understanding user interaction patterns in CLI applications.
+
+## Installation
+
+```bash
+go install github.com/wim-vdw/todo-cli@latest
+```
