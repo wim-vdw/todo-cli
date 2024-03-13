@@ -28,7 +28,7 @@ var force bool
 
 func init() {
 	rootCmd.AddCommand(cleanCmd)
-	cleanCmd.Flags().BoolVar(&force, "force", false, "Immediately clean To-Do list and bypass graceful cleanup")
+	cleanCmd.Flags().BoolVar(&force, "force", false, "Immediately clean To-Do list and bypass graceful cleanup.")
 }
 
 func cleanTasks(cmd *cobra.Command, args []string) {

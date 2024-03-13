@@ -26,7 +26,7 @@ var showCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(showCmd)
-	showCmd.Flags().BoolVarP(&displayPriority, "priority", "p", false, "display priority")
+	showCmd.Flags().BoolVarP(&displayPriority, "priority", "p", false, "Display priority.")
 }
 
 func showTasks(cmd *cobra.Command, args []string) {
