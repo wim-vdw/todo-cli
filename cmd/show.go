@@ -44,13 +44,7 @@ func showTasks(cmd *cobra.Command, args []string) {
 	}
 	w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
 	printTitles(w, displayPriority)
-	for _, t := range tasks {
-		if displayPriority {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus()+"\t"+t.PrettyPriority())
-		} else {
-			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus())
-		}
-	}
+	printTasks(w, &tasks, displayPriority)
 	w.Flush()
 }
 
@@ -61,5 +55,15 @@ func printTitles(w *tabwriter.Writer, displayPriority bool) {
 	} else {
 		fmt.Fprintln(w, "ID\tTask\tStatus")
 		fmt.Fprintln(w, "--\t----\t------")
+	}
+}
+
+func printTasks(w *tabwriter.Writer, tasks *task.Tasks, displayPriority bool) {
+	for _, t := range *tasks {
+		if displayPriority {
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus()+"\t"+t.PrettyPriority())
+		} else {
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyStatus())
+		}
 	}
 }
