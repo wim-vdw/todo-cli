@@ -40,8 +40,10 @@ func showTasks(cmd *cobra.Command, args []string) {
 	}
 	if len(tasks) == 0 {
 		fmt.Println("Nothing on your To-Do list for the moment.")
+		os.Exit(0)
 	}
 	w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
+	printTitles(w, displayPriority)
 	for _, t := range tasks {
 		if displayPriority {
 			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyDone()+"\t"+t.PrettyPriority())
@@ -50,4 +52,14 @@ func showTasks(cmd *cobra.Command, args []string) {
 		}
 	}
 	w.Flush()
+}
+
+func printTitles(w *tabwriter.Writer, displayPriority bool) {
+	if displayPriority {
+		fmt.Fprintln(w, "ID\tTask\tStatus\tPriority")
+		fmt.Fprintln(w, "--\t----\t------\t--------")
+	} else {
+		fmt.Fprintln(w, "ID\tTask\tStatus")
+		fmt.Fprintln(w, "--\t----\t------")
+	}
 }
