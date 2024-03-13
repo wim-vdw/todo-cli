@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wim-vdw/todo-cli/internal/task"
 	"os"
+	"text/tabwriter"
 )
 
 var displayPriority bool
@@ -40,11 +41,13 @@ func showTasks(cmd *cobra.Command, args []string) {
 	if len(tasks) == 0 {
 		fmt.Println("Nothing on your To-Do list for the moment.")
 	}
+	w := tabwriter.NewWriter(os.Stdout, 5, 0, 1, ' ', 0)
 	for _, t := range tasks {
 		if displayPriority {
-			fmt.Println(t.PrettyPosition(), t.Description, t.PrettyPriority())
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description+"\t"+t.PrettyPriority())
 		} else {
-			fmt.Println(t.PrettyPosition(), t.Description)
+			fmt.Fprintln(w, t.PrettyPosition()+"\t"+t.Description)
 		}
 	}
+	w.Flush()
 }
