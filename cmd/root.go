@@ -22,6 +22,8 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().String("datafile", "./tasks.json", "datafile containing tasks")
+	rootCmd.PersistentFlags().String("datafile", "./tasks.json", "Datafile containing tasks.")
+	rootCmd.PersistentFlags().BoolP("help", "h", false, "Display this help message.")
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
 }
