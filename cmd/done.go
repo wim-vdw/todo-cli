@@ -15,7 +15,7 @@ const doneExamples = `  # Mark task with ID 1 as done
 
 var doneCmd = &cobra.Command{
 	Use:     "done task-id",
-	Short:   "Mark a task as done the To-Do list",
+	Short:   "Mark a task as done in the To-Do list",
 	Aliases: []string{"finish", "ok"},
 	Example: doneExamples,
 	Args:    checkArgsDone,
