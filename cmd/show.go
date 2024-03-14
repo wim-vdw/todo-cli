@@ -6,16 +6,26 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wim-vdw/todo-cli/internal/task"
 	"os"
+	"sort"
 	"text/tabwriter"
 )
 
-var displayPriority bool
+var (
+	displayPriority bool
+	sortPriority    bool
+)
 
 const showExamples = `  # Show tasks
   todo-cli show
 
   # Show tasks including priority
-  todo-cli show --priority`
+  todo-cli show --priority
+
+  # Show tasks sorted by priority
+  todo-cli show --sorted
+
+  # Show tasks including priority sorted by priority
+  todo-cli show --sorted --priority`
 
 var showCmd = &cobra.Command{
 	Use:     "show",
@@ -28,6 +38,7 @@ var showCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(showCmd)
 	showCmd.Flags().BoolVarP(&displayPriority, "priority", "p", false, "Display priority.")
+	showCmd.Flags().BoolVarP(&sortPriority, "sort", "s", false, "Sort by priority (finished tasks are put at the end).")
 }
 
 func showTasks(cmd *cobra.Command, args []string) {
@@ -41,6 +52,9 @@ func showTasks(cmd *cobra.Command, args []string) {
 	if len(tasks) == 0 {
 		fmt.Println("Nothing on your To-Do list for the moment.")
 		os.Exit(0)
+	}
+	if sortPriority {
+		sort.Sort(task.ByPriority(tasks))
 	}
 	w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
 	printTitles(w, displayPriority)

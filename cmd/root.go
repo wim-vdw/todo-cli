@@ -12,7 +12,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "todo-cli",
 	Short:   "A To-Do list application written in Go.",
-	Version: "v1.0.3",
+	Version: "v1.1.0",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()
 	},
