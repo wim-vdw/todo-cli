@@ -32,6 +32,21 @@ func (t Tasks) FinishTask(taskID int) (Tasks, error) {
 	return t, nil
 }
 
+func (t Tasks) UpdateTaskDescription(taskID int, description string) (Tasks, error) {
+	if taskID <= 0 {
+		return []Task{}, errors.New("task-id can not be negative")
+	}
+	if taskID > len(t) {
+		return []Task{}, errors.New("task-id does not exist")
+	}
+	if description == "" {
+		return []Task{}, errors.New("task description can not be blank")
+	}
+	taskID -= 1
+	t[taskID].SetDescription(description)
+	return t, nil
+}
+
 func ReadTasks(filename string) (Tasks, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {

@@ -19,6 +19,10 @@ func (t *Task) SetDone() {
 	t.Done = true
 }
 
+func (t *Task) SetDescription(description string) {
+	t.Description = description
+}
+
 func (t *Task) PrettyPriority() string {
 	switch t.Priority {
 	case 1:
