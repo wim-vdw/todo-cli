@@ -59,3 +59,23 @@ func SaveTasks(filename string, tasks Tasks) error {
 	}
 	return nil
 }
+
+type ByPriority Tasks
+
+func (s ByPriority) Len() int {
+	return len(s)
+}
+
+func (s ByPriority) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s ByPriority) Less(i, j int) bool {
+	if s[i].Done == s[j].Done {
+		if s[i].Priority == s[j].Priority {
+			return s[i].position < s[j].position
+		}
+		return s[i].Priority < s[j].Priority
+	}
+	return !s[i].Done
+}
