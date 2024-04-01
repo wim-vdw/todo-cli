@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/wim-vdw/todo-cli/internal/task"
-	"os"
 )
 
 var priority int

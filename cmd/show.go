@@ -2,12 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"github.com/wim-vdw/todo-cli/internal/task"
 	"os"
 	"sort"
 	"text/tabwriter"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/wim-vdw/todo-cli/internal/task"
 )
 
 var (
