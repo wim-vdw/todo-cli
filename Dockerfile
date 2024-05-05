@@ -11,7 +11,7 @@ COPY main.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /todo-cli .
 
-FROM alpine
+FROM alpine:3.19.1
 
 ENV TIMEZONE=Europe/Brussels
 
