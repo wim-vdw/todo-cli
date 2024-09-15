@@ -37,5 +37,6 @@ func init() {
 	rootCmd.Flags().BoolP("version", "v", false, "Display version info.")
 	rootCmd.SetVersionTemplate("{{ .Version }}\n")
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+	rootCmd.SilenceUsage = true
 	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
 }
