@@ -22,7 +22,7 @@ var cleanCmd = &cobra.Command{
 	Short:   "Clean the complete To-Do list",
 	Aliases: []string{"init", "initialize"},
 	Example: cleanExamples,
-	Run:     cleanTasks,
+	RunE:    cleanTasks,
 }
 
 var forceClean bool
@@ -32,7 +32,7 @@ func init() {
 	cleanCmd.Flags().BoolVar(&forceClean, "force", false, "Immediately clean To-Do list and bypass graceful cleanup.")
 }
 
-func cleanTasks(cmd *cobra.Command, args []string) {
+func cleanTasks(cmd *cobra.Command, args []string) error {
 	if !forceClean {
 		fmt.Print("Are you sure? (Y)es/(N)o): ")
 		reader := bufio.NewReader(os.Stdin)
@@ -47,10 +47,11 @@ func cleanTasks(cmd *cobra.Command, args []string) {
 		tasks := task.Tasks{}
 		err := task.SaveTasks(filename, tasks)
 		if err != nil {
-			fmt.Println("Error writing datafile containing tasks.")
-			fmt.Println("Error message ->", err)
-			os.Exit(1)
+			return fmt.Errorf("could not save datafile '%s'", filename)
 		}
 		fmt.Println("Datafile containing tasks has been cleaned.")
+	} else {
+		fmt.Println("Datafile containing tasks has NOT been cleaned.")
 	}
+	return nil
 }

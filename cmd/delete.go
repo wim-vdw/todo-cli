@@ -25,7 +25,7 @@ var deleteCmd = &cobra.Command{
 	Aliases: []string{"del", "rm", "remove"},
 	Example: deleteExamples,
 	Args:    checkArgsDelete,
-	Run:     deleteTask,
+	RunE:    deleteTask,
 }
 
 var forceDelete bool
@@ -42,7 +42,7 @@ func checkArgsDelete(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func deleteTask(cmd *cobra.Command, args []string) {
+func deleteTask(cmd *cobra.Command, args []string) error {
 	if !forceDelete {
 		fmt.Print("Are you sure? (Y)es/(N)o): ")
 		reader := bufio.NewReader(os.Stdin)
@@ -55,29 +55,23 @@ func deleteTask(cmd *cobra.Command, args []string) {
 	if forceDelete {
 		taskID, err := strconv.Atoi(args[0])
 		if err != nil {
-			fmt.Println("Error: task-id should be a numeric value.")
-			os.Exit(1)
+			return fmt.Errorf("task-id should be a numeric value")
 		}
 		filename := viper.GetString("datafile")
 		tasks, err := task.ReadTasks(filename)
 		if err != nil {
-			fmt.Println("Error reading datafile containing tasks.")
-			fmt.Println("Error message ->", err)
-			os.Exit(1)
+			return fmt.Errorf("could not read datafile '%s'", filename)
 		}
 		tasks, err = tasks.DeleteTask(taskID)
 		if err != nil {
-			fmt.Println("Error deleting task from the To-Do list.")
-			fmt.Println("Error message ->", err)
-			os.Exit(1)
+			return err
 		}
-		fmt.Println("Task deleted with success.")
 		err = task.SaveTasks(filename, tasks)
 		if err != nil {
-			fmt.Println("Error writing datafile containing tasks.")
-			fmt.Println("Error message ->", err)
-			os.Exit(1)
+			return fmt.Errorf("could not save datafile '%s'", filename)
 		}
+		fmt.Println("Task deleted with success.")
 		fmt.Println("Task(s) written to datafile.")
 	}
+	return nil
 }
