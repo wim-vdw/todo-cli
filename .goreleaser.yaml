@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 project_name: todo-cli
 
@@ -32,4 +32,4 @@ changelog:
       - "^test:"
 
 snapshot:
-  name_template: "{{ .Version }}"
+  version_template: "{{ .Version }}"
