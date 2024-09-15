@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Short:   "A To-Do list application written in Go.",
 	Version: "v1.2.1",
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		_ = cmd.Help()
 	},
 }
 
@@ -38,5 +38,5 @@ func init() {
 	rootCmd.SetVersionTemplate("{{ .Version }}\n")
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.SilenceUsage = true
-	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
+	_ = viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
 }
