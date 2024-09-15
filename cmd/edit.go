@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -20,7 +19,7 @@ var editCmd = &cobra.Command{
 	Aliases: []string{"change", "update"},
 	Example: editExamples,
 	Args:    checkArgsUpdate,
-	Run:     editTask,
+	RunE:    editTask,
 }
 
 func init() {
@@ -34,32 +33,26 @@ func checkArgsUpdate(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func editTask(cmd *cobra.Command, args []string) {
+func editTask(cmd *cobra.Command, args []string) error {
 	taskID, err := strconv.Atoi(args[0])
 	if err != nil {
-		fmt.Println("Error: task-id should be a numeric value.")
-		os.Exit(1)
+		return fmt.Errorf("task-id should be a numeric value")
 	}
 	newDescription := args[1]
 	filename := viper.GetString("datafile")
 	tasks, err := task.ReadTasks(filename)
 	if err != nil {
-		fmt.Println("Error reading datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
 	tasks, err = tasks.UpdateTaskDescription(taskID, newDescription)
 	if err != nil {
-		fmt.Println("Error updating task description.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return err
 	}
-	fmt.Println("Task description updated with success.")
 	err = task.SaveTasks(filename, tasks)
 	if err != nil {
-		fmt.Println("Error writing datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not save datafile '%s'", filename)
 	}
+	fmt.Println("Task description updated with success.")
 	fmt.Println("Task(s) written to datafile.")
+	return nil
 }

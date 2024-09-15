@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -20,7 +19,7 @@ var doneCmd = &cobra.Command{
 	Aliases: []string{"finish", "ok"},
 	Example: doneExamples,
 	Args:    checkArgsDone,
-	Run:     doneTask,
+	RunE:    doneTask,
 }
 
 func init() {
@@ -34,31 +33,25 @@ func checkArgsDone(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func doneTask(cmd *cobra.Command, args []string) {
+func doneTask(cmd *cobra.Command, args []string) error {
 	taskID, err := strconv.Atoi(args[0])
 	if err != nil {
-		fmt.Println("Error: task-id should be a numeric value.")
-		os.Exit(1)
+		return fmt.Errorf("task-id should be a numeric value")
 	}
 	filename := viper.GetString("datafile")
 	tasks, err := task.ReadTasks(filename)
 	if err != nil {
-		fmt.Println("Error reading datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
 	tasks, err = tasks.FinishTask(taskID)
 	if err != nil {
-		fmt.Println("Error setting task to done.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return err
 	}
-	fmt.Println("Task finished with success.")
 	err = task.SaveTasks(filename, tasks)
 	if err != nil {
-		fmt.Println("Error writing datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not save datafile '%s'", filename)
 	}
+	fmt.Println("Task finished with success.")
 	fmt.Println("Task(s) written to datafile.")
+	return nil
 }

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -25,7 +24,7 @@ var addCmd = &cobra.Command{
 	Short:   "Add tasks to the To-Do list",
 	Aliases: []string{"create", "new"},
 	Example: addExamples,
-	Run:     addTask,
+	RunE:    addTask,
 }
 
 func init() {
@@ -33,10 +32,9 @@ func init() {
 	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority.")
 }
 
-func addTask(cmd *cobra.Command, args []string) {
+func addTask(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
-		fmt.Println("Error: specify at least 1 task to add.")
-		os.Exit(1)
+		return fmt.Errorf("specify at least 1 task to add")
 	}
 	filename := viper.GetString("datafile")
 	tasks, err := task.ReadTasks(filename)
@@ -50,12 +48,11 @@ func addTask(cmd *cobra.Command, args []string) {
 		item.SetPriority(priority)
 		tasks = append(tasks, item)
 	}
-	fmt.Println("Task(s) added with success.")
 	err = task.SaveTasks(filename, tasks)
 	if err != nil {
-		fmt.Println("Error writing datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not save datafile '%s'", filename)
 	}
+	fmt.Println("Task(s) added with success.")
 	fmt.Println("Task(s) written to datafile.")
+	return nil
 }

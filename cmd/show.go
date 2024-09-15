@@ -33,7 +33,7 @@ var showCmd = &cobra.Command{
 	Short:   "Display tasks from the To-Do list",
 	Aliases: []string{"display", "list"},
 	Example: showExamples,
-	Run:     showTasks,
+	RunE:    showTasks,
 }
 
 func init() {
@@ -42,25 +42,24 @@ func init() {
 	showCmd.Flags().BoolVarP(&sortPriority, "sort", "s", false, "Sort by priority (finished tasks are put at the end).")
 }
 
-func showTasks(cmd *cobra.Command, args []string) {
+func showTasks(cmd *cobra.Command, args []string) error {
 	filename := viper.GetString("datafile")
 	tasks, err := task.ReadTasks(filename)
 	if err != nil {
-		fmt.Println("Error reading datafile containing tasks.")
-		fmt.Println("Error message ->", err)
-		os.Exit(1)
+		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
 	if len(tasks) == 0 {
 		fmt.Println("Nothing on your To-Do list for the moment.")
-		os.Exit(0)
+	} else {
+		if sortPriority {
+			sort.Sort(task.ByPriority(tasks))
+		}
+		w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
+		printTitles(w, displayPriority)
+		printTasks(w, &tasks, displayPriority)
+		w.Flush()
 	}
-	if sortPriority {
-		sort.Sort(task.ByPriority(tasks))
-	}
-	w := tabwriter.NewWriter(os.Stdout, 4, 0, 1, ' ', 0)
-	printTitles(w, displayPriority)
-	printTasks(w, &tasks, displayPriority)
-	w.Flush()
+	return nil
 }
 
 func printTitles(w *tabwriter.Writer, displayPriority bool) {
