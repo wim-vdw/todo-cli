@@ -14,8 +14,8 @@ var rootCmd = &cobra.Command{
 	Use:     "todo-cli",
 	Short:   "A To-Do list application written in Go.",
 	Version: "v1.2.0",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return cmd.Help()
+	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
 	},
 }
 
