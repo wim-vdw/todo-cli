@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -27,11 +26,11 @@ func Execute() {
 }
 
 func init() {
-	u, err := user.Current()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("Unable to detect home directory. Please set datafile using --datafile.")
 	}
-	datafile := filepath.Join(u.HomeDir, ".tasks.json")
+	datafile := filepath.Join(homeDir, ".tasks.json")
 	rootCmd.PersistentFlags().String("datafile", datafile, "Datafile containing tasks.")
 	rootCmd.PersistentFlags().BoolP("help", "h", false, "Display this help message.")
 	rootCmd.Flags().BoolP("version", "v", false, "Display version info.")
