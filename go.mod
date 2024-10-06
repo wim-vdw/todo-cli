@@ -5,6 +5,7 @@ go 1.22
 require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
+	github.com/wim-vdw/todo-client v1.1.1
 )
 
 require (

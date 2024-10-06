@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/wim-vdw/todo-cli/internal/task"
+	"github.com/wim-vdw/todo-client/task"
 )
 
 const deleteExamples = `  # Delete task with ID 1 with confirmation message
