@@ -39,15 +39,16 @@ func doneTask(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("task-id should be a numeric value")
 	}
 	filename := viper.GetString("datafile")
-	tasks, err := task.ReadTasks(filename)
+	taskClient := task.Client{}
+	err = taskClient.ReadTasks(filename)
 	if err != nil {
 		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
-	tasks, err = tasks.FinishTask(taskID)
+	err = taskClient.FinishTask(taskID)
 	if err != nil {
 		return err
 	}
-	err = task.SaveTasks(filename, tasks)
+	err = taskClient.SaveTasks(filename)
 	if err != nil {
 		return fmt.Errorf("could not save datafile '%s'", filename)
 	}
