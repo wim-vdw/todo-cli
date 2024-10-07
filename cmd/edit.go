@@ -40,15 +40,16 @@ func editTask(cmd *cobra.Command, args []string) error {
 	}
 	newDescription := args[1]
 	filename := viper.GetString("datafile")
-	tasks, err := task.ReadTasks(filename)
+	taskClient := task.Client{}
+	err = taskClient.ReadTasks(filename)
 	if err != nil {
 		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
-	tasks, err = tasks.UpdateTaskDescription(taskID, newDescription)
+	err = taskClient.UpdateTaskDescription(taskID, newDescription)
 	if err != nil {
 		return err
 	}
-	err = task.SaveTasks(filename, tasks)
+	err = taskClient.SaveTasks(filename)
 	if err != nil {
 		return fmt.Errorf("could not save datafile '%s'", filename)
 	}
