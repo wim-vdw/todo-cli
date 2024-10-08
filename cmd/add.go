@@ -37,8 +37,10 @@ func addTask(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("specify at least 1 task to add")
 	}
 	filename := viper.GetString("datafile")
-	taskClient := task.Client{}
-	err := taskClient.ReadTasks(filename)
+	taskClient := &task.Client{
+		Filename: filename,
+	}
+	err := taskClient.ReadTasks()
 	if err != nil {
 		fmt.Println("Error reading datafile containing tasks.")
 		fmt.Println("Error message ->", err)
@@ -49,7 +51,7 @@ func addTask(cmd *cobra.Command, args []string) error {
 		item.SetPriority(priority)
 		taskClient.AddTask(item)
 	}
-	err = taskClient.SaveTasks(filename)
+	err = taskClient.SaveTasks()
 	if err != nil {
 		return fmt.Errorf("could not save datafile '%s'", filename)
 	}

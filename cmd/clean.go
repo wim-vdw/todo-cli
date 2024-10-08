@@ -44,9 +44,11 @@ func cleanTasks(cmd *cobra.Command, args []string) error {
 	}
 	if forceClean {
 		filename := viper.GetString("datafile")
-		taskClient := task.Client{}
+		taskClient := &task.Client{
+			Filename: filename,
+		}
 		taskClient.CleanTasks()
-		err := taskClient.SaveTasks(filename)
+		err := taskClient.SaveTasks()
 		if err != nil {
 			return fmt.Errorf("could not save datafile '%s'", filename)
 		}
