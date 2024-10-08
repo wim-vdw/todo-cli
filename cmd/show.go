@@ -41,8 +41,10 @@ func init() {
 
 func showTasks(cmd *cobra.Command, args []string) error {
 	filename := viper.GetString("datafile")
-	taskClient := task.Client{}
-	err := taskClient.ReadTasks(filename)
+	taskClient := &task.Client{
+		Filename: filename,
+	}
+	err := taskClient.ReadTasks()
 	if err != nil {
 		return fmt.Errorf("could not read datafile '%s'", filename)
 	}
