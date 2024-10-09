@@ -48,7 +48,10 @@ func addTask(cmd *cobra.Command, args []string) error {
 	}
 	for _, x := range args {
 		item := task.Task{Description: x}
-		item.SetPriority(priority)
+		err = item.SetPriority(priority)
+		if err != nil {
+			return err
+		}
 		taskClient.AddTask(item)
 	}
 	err = taskClient.SaveTasks()
