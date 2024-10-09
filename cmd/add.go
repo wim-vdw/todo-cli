@@ -29,7 +29,7 @@ var addCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(addCmd)
-	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority.")
+	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority (1=High, 2=Medium, 3=Low).")
 }
 
 func addTask(cmd *cobra.Command, args []string) error {
