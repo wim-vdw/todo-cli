@@ -6,12 +6,12 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY cmd ./cmd
-COPY internal ./internal
+#COPY internal ./internal
 COPY main.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /todo-cli .
 
-FROM alpine:3.19.1
+FROM alpine:3.20.3
 
 ENV TIMEZONE=Europe/Brussels
 
