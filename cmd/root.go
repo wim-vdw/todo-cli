@@ -10,12 +10,15 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:     "todo-cli",
-	Short:   "A To-Do list application written in Go.",
-	Version: "v1.4.6",
+	Use:   "todo-cli",
+	Short: "A To-Do list application written in Go.",
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
 	},
+}
+
+func SetVersionInfo(version, commit, date string) {
+	rootCmd.Version = fmt.Sprintf("To-Do CLI version %s (commit %s, built %s)", version, commit, date)
 }
 
 func Execute() {
